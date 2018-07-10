@@ -1,0 +1,2 @@
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'X-Request-ID: 123124' \
+--header 'authorization: Basic TkVXX1BPUlRBTDoxMjM0NTY=' 'http://{hostname}:8080/credit-module-wallet-ws/1.0/organizations/patch-wallet'
