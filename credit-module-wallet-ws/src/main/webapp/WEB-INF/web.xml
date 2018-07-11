@@ -10,18 +10,18 @@
 		<name>java:global/credit-module-wallet</name>
 		<class-name>com.mysql.jdbc.jdbc2.optional.MysqlDataSource</class-name>
 
-<!-- 	 <server-name>${ENV=DB_HOST}</server-name>
+	 	<server-name>${ENV=DB_HOST}</server-name>
 		<port-number>3306</port-number>
 		<database-name>credit_module</database-name>
 		<user>${ENV=JDBC_USER}</user>
-		<password>${ENV=JDBC_PASSWORD}</password> -->
+		<password>${ENV=JDBC_PASSWORD}</password>
 
 
-		<server-name>mysql</server-name>
+<!-- 		<server-name>mysql</server-name>
 		<port-number>3306</port-number>
 		<database-name>credit_module</database-name>
 		<user>root1</user>
-		<password>kl,m2we3</password>
+		<password>kl,m2we3</password> -->
 
 		<!-- <server-name>127.0.0.1</server-name> -->
 		<!-- <port-number>3307</port-number> -->
