@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	
+	<!-- Configure the root directory according to your preference -->
+	<Properties>
+		<!-- <Property name="logRootDir">/Users/lokey.chow/Desktop/payara41/glassfish/domains/domain1/logs</Property> -->
+		<Property name="logRootDir">/Users/shawn/Documents/payara41/glassfish/domains/domain1/logs</Property>
+	</Properties>
+	
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{ISO8601} |%t| %5p | %c{1} | %L | %m%n" />
+		</Console>
+		
+		<RollingFile name="ERROR-LOG-FILE" fileName="${logRootDir}/error.log"
+			filePattern="${logRootDir}/error-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout  pattern="%d{ISO8601} |%t| %5p | %c{1} | %L | %m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+		
+		<RollingFile name="GENERAL-LOG-FILE" fileName="${logRootDir}/server.log"
+			filePattern="${logRootDir}/server-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout  pattern="%d{ISO8601} |%t| %5p | %c{1} | %L | %m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="trace">
+			<AppenderRef ref="Console" level="DEBUG" />
+			<AppenderRef ref="ERROR-LOG-FILE" level="ERROR"/>
+		</Root>
+		
+		<Logger level="trace">
+			<AppenderRef ref="GENERAL-LOG-FILE" level="DEBUG" />
+		</Logger>
+	</Loggers>
+</Configuration>
