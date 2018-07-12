@@ -9,7 +9,7 @@ public interface ReportService {
 	
 	public List<Object[]> getReportDataList(Integer year, Integer month);
 	
-	public void createOrUpdateReport(Report report);
+	public void createOrUpdateReport(Report report, Integer year, Integer month);
 	
 	public byte[] getReportDataFromDB(Integer year, Integer month);
 	

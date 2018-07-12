@@ -1,7 +1,9 @@
 package com.kooppi.nttca.portal.exception.domain;
 
 public enum PortalErrorCode {
-
+//
+	ENVIRONMENT_VALUE_NOT_SET_OR_EMPTY("WALLET-ERROR-0000","CONFIG_LOCATION is not set in the environment.",500),
+	
 	//permission
 	NO_WALLET_VIEW_PERMISSION("WALLET-ERROR-9001","The request user id does not have permission to view the wallet.",400),
 	NO_WALLET_CREATE_PERMISSION("WALLET-ERROR-9002","The request user id does not have permission to create the wallet.",400),

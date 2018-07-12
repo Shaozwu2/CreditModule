@@ -21,8 +21,8 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
-	public void createOrUpdateReport(Report report) {
-		reportRepository.createOrUpdateReport(report);
+	public void createOrUpdateReport(Report report, Integer year, Integer month) {
+		reportRepository.createOrUpdateReport(report, year, month);
 	}
 	
 	@Override

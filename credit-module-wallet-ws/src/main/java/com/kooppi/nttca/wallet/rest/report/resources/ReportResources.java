@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -28,6 +29,8 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.kooppi.nttca.portal.common.auditlog.AuditingActionType;
+import com.kooppi.nttca.portal.common.auditlog.Logged;
 import com.kooppi.nttca.portal.common.config.file.PropertyResolver;
 import com.kooppi.nttca.portal.common.filter.response.dto.ResponseHeader;
 import com.kooppi.nttca.portal.exception.domain.PortalErrorCode;
@@ -145,13 +148,9 @@ public class ReportResources {
 	}
 	
 	@GET
-	@Path("generate-report-and-save-to-db")
-	public void generateReportAndSaveToDB() {
-		logger.debug("generate and save to db, start...");
-		
-		LocalDate today = LocalDate.now();
-		Integer year = today.getYear();
-		Integer month = today.getMonthValue();
+	@Path("generate-report-by-year-and-month-and-save-to-db")
+	public void generateReportAndSaveToDB(@QueryParam("year")  Integer year, @QueryParam("month")  Integer month) {
+		logger.debug("generate report (year = {}, month = {}) and save to db, start...", year, month);
 		
 		Response r = generateReportByYearAndMonth(year, month);
 		StreamingOutput stream = (StreamingOutput) r.getEntity();
@@ -164,14 +163,28 @@ public class ReportResources {
 		byte[] reportFile = byteArrayStream.toByteArray();
 		
 		Report report = new Report();
-		report.setReportDate(new Date());
+		Date date = new GregorianCalendar(year, month - 1, 1).getTime();
+		report.setReportDate(date);
 		report.setReportFile(reportFile);
 		
-		reportService.createOrUpdateReport(report);
+		reportService.createOrUpdateReport(report, year, month);
+	}
+	
+	@GET
+	@Path("generate-report-and-save-to-db")
+	public void generateReportAndSaveToDB() {
+		logger.debug("generate and save to db, start...");
+		
+		LocalDate today = LocalDate.now();
+		Integer year = today.getYear();
+		Integer month = today.getMonthValue();
+		
+		generateReportAndSaveToDB(year, month);
 	}
 	
 	@GET
 	@Path("download-report-by-year-and-month")
+	@Logged(actionType = AuditingActionType.DOWNLOAD_FINANCE_TNC)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Download report", notes = "Version 1.0, Last Modified Date: 2018-05-23", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })

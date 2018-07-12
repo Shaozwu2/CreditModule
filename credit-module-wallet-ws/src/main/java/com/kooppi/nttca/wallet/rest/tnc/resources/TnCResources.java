@@ -107,11 +107,11 @@ public class TnCResources {
 	}
 	
 	@POST
-	@Transactional
 	@Path("create-tnc")
+	@Transactional
+	@Logged(actionType = AuditingActionType.CREATE_TNC)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Logged(actionType = AuditingActionType.CREATE_TNC)
 	@ApiOperation(value = "Create T&C", notes = "Version 1.0, Last Modified Date: 2018-05-28", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class)})
@@ -149,7 +149,18 @@ public class TnCResources {
 		dto.validateUpdateTnC();
 		
 		TnC tnc = PortalExceptionUtils.throwIfEmpty(tncService.findByUid(tncId), PortalErrorCode.UNABLE_TO_FIND_TNC_RECORD);
-		tnc.update(dto.getName(), dto.getDescription(), dto.getBuName(), dto.getIsDefault(),dto.getIsVisible());
+		
+		// modified on July 12th 2018
+		String finalFileName = null;
+		if (dto.getAttachmentData() != null) {
+			// means new document uploaded, createFile and return finalFileName(table column = file_name)
+			finalFileName = tncService.createFile(dto.getFileName(), dto.getAttachmentData());
+		}
+		logger.debug("finalFileName = {}", finalFileName);
+		
+		// update other fields
+		tnc.update(dto.getName(), dto.getDescription(), dto.getBuName(), dto.getIsDefault(), dto.getIsVisible(),
+				dto.getAttachmentData() != null, dto.getFileName(), finalFileName);
 		
 		TnCDto tnCDto = tnc.toTnCDto();
 		return tnCDto;
@@ -157,6 +168,7 @@ public class TnCResources {
 	
 	@GET
 	@Path("download-tnc/{tncId}")
+	@Logged(actionType = AuditingActionType.DOWNLOAD_TNC)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Download tnc", notes = "Version 1.0, Last Modified Date: 2018-06-11", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
@@ -181,6 +193,7 @@ public class TnCResources {
 
 	@GET
 	@Path("download-tnc")
+	@Logged(actionType = AuditingActionType.DOWNLOAD_TNC)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Download tnc", notes = "Version 1.0, Last Modified Date: 2018-06-11", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
@@ -198,8 +211,6 @@ public class TnCResources {
 		TnCToPricebook tncToPricebook = PortalExceptionUtils.throwIfEmpty(tncService.findTncToPricebookByUid(mapUid), PortalErrorCode.INVALID_TNC_TO_PRODUCT_UID);
 		
 		PortalExceptionUtils.throwIfFalse(tncToPricebook.getOrganizationId() == customerId, PortalErrorCode.INVALID_ORGANIZATION_USER);
-		
-		
 		
 		PriceBook pb = PortalExceptionUtils.throwIfEmpty(pbService.findByPartNumber(partNo), PortalErrorCode.INVALID_PART_NO);
 		
@@ -220,6 +231,7 @@ public class TnCResources {
 
 	@GET
 	@Path("download-tnc-to-product-report")
+	@Logged(actionType = AuditingActionType.DOWNLOAD_TNC_REPORT)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Download tnc report", notes = "Version 1.0, Last Modified Date: 2018-06-11", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
@@ -347,9 +359,9 @@ public class TnCResources {
 		return tncList;
 	}
 
+	@DELETE
 	@Path("delete-tnc/{tncId}")
 	@Transactional
-	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Logged(actionType = AuditingActionType.DELETE_TNC)
@@ -373,7 +385,7 @@ public class TnCResources {
 	@Path("create-tnc-to-pricebook")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Logged(actionType = AuditingActionType.CREATE_TNC)
+	@Logged(actionType = AuditingActionType.CREATE_TNC_TO_PRODUCT)
 	@ApiOperation(value = "Create T&C to pricebook mapping", notes = "Version 1.0, Last Modified Date: 2018-06-11", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class)})
@@ -434,7 +446,7 @@ public class TnCResources {
 	@Path("update-tnc-to-pricebook/{uid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Logged(actionType = AuditingActionType.UPDATE_TNC)
+	@Logged(actionType = AuditingActionType.UPDATE_TNC_TO_PRODUCT)
 	@ApiOperation(value = "Update T&C to pricebook mapping", notes = "Version 1.0, Last Modified Date: 2018-06-13", response = ResponseHeader.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class)})
@@ -463,7 +475,7 @@ public class TnCResources {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Logged(actionType = AuditingActionType.DELETE_TNC)
+	@Logged(actionType = AuditingActionType.DELETE_TNC_TO_PRODUCT)
 	@ApiOperation(value = "Delete TnC to pricebook mapping", notes = "Version 1.0, Last Modified Date: 2018-06-14", response = GoodResponseModel.class )
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
 	@ApiImplicitParams({

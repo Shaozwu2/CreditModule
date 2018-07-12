@@ -1,10 +1,13 @@
 package com.kooppi.nttca.wallet.common.persistence.domain;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.kooppi.nttca.portal.common.domain.Modifiable;
+import com.kooppi.nttca.portal.common.utils.IOUtils;
 import com.kooppi.nttca.portal.wallet.dto.termsAndConditions.TnCDto;
 
 @Entity
@@ -47,12 +50,20 @@ public class TnC extends Modifiable {
 		return tnc;
 	}
 
-	public void update(String templateName, String description, String buName, Boolean isDefault, Boolean isVisible) {
+	public void update(String templateName, String description, String buName, Boolean isDefault, Boolean isVisible,
+			Boolean isDocUpdated, String uploadedName, String fileName) {
 		this.templateName = templateName;
 		this.buName = buName;
 		this.description = description;
 		this.isDefault = isDefault;
 		this.isVisible = isVisible;
+		// modified on July 12th 2018
+		if (isDocUpdated) {
+			// means new document uploaded
+			// uploadedName + "_" + random UUID = fileName
+			this.uploadedName = uploadedName;
+			this.fileName = fileName;
+		}
 	}
 
 	public TnCDto toTnCDto() {

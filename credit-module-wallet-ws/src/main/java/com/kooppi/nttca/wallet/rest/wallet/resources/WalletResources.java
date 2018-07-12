@@ -24,7 +24,6 @@ import com.kooppi.nttca.ce.payment.repository.ResultList;
 import com.kooppi.nttca.portal.common.auditlog.AuditingActionType;
 import com.kooppi.nttca.portal.common.auditlog.Logged;
 import com.kooppi.nttca.portal.common.filter.context.RequestContextImpl;
-import com.kooppi.nttca.portal.common.filter.response.dto.EmptyResponseResult;
 import com.kooppi.nttca.portal.exception.domain.PortalErrorCode;
 import com.kooppi.nttca.portal.exception.domain.PortalExceptionUtils;
 import com.kooppi.nttca.portal.wallet.domain.IdleUnit;
@@ -126,28 +125,28 @@ public class WalletResources {
 	}
 	
 
-	@POST
-	@Logged(actionType = AuditingActionType.ACTIVATE_WALLET)
-	@Path("activate-wallet/{walletId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Activate Wallet", notes = "Version 1.0, Last Modified Date: 2016-07-27", response = GoodResponseModel.class )
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
-	@ApiImplicitParams({
-	    @ApiImplicitParam(name = "X-Request-ID", value = "requestId", required = true, dataType = "string", paramType = "header"),
-	    @ApiImplicitParam(name = "Authorization", value = "Authorization", required = true, dataType = "string", paramType = "header")})
-	public EmptyResponseResult activateWallet(@ApiParam(value="Wallet Id", required = true) @PathParam("walletId") String walletId) {
-		logger.debug("begin activateWallet, walletId = {}",walletId);
-		PortalExceptionUtils.throwIfNullOrEmptyString(walletId, PortalErrorCode.MISS_PARAM_WALLET_ID);
-		
-		Wallet wallet = PortalExceptionUtils.throwIfEmpty(walletService.findWalletById(walletId), PortalErrorCode.INVALID_WALLET_ID);
-		PortalExceptionUtils.throwIfFalse(wallet.isInactive(), PortalErrorCode.WALLET_IS_INACTIVE);
-				
-		wallet.activateWallet(rc.getRequestUserId());
-
-		return EmptyResponseResult.create();
-	}
-	
+//	@POST
+//	@Logged(actionType = AuditingActionType.ACTIVATE_WALLET)
+//	@Path("activate-wallet/{walletId}")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@ApiOperation(value = "Activate Wallet", notes = "Version 1.0, Last Modified Date: 2016-07-27", response = GoodResponseModel.class )
+//	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
+//	@ApiImplicitParams({
+//	    @ApiImplicitParam(name = "X-Request-ID", value = "requestId", required = true, dataType = "string", paramType = "header"),
+//	    @ApiImplicitParam(name = "Authorization", value = "Authorization", required = true, dataType = "string", paramType = "header")})
+//	public EmptyResponseResult activateWallet(@ApiParam(value="Wallet Id", required = true) @PathParam("walletId") String walletId) {
+//		logger.debug("begin activateWallet, walletId = {}",walletId);
+//		PortalExceptionUtils.throwIfNullOrEmptyString(walletId, PortalErrorCode.MISS_PARAM_WALLET_ID);
+//		
+//		Wallet wallet = PortalExceptionUtils.throwIfEmpty(walletService.findWalletById(walletId), PortalErrorCode.INVALID_WALLET_ID);
+//		PortalExceptionUtils.throwIfFalse(wallet.isInactive(), PortalErrorCode.WALLET_IS_INACTIVE);
+//				
+//		wallet.activateWallet(rc.getRequestUserId());
+//
+//		return EmptyResponseResult.create();
+//	}
+//	
 	
 	@POST
 	@Logged(actionType = AuditingActionType.UPDATE_WALLET)
@@ -292,54 +291,54 @@ public class WalletResources {
 		return dto;
 	}
 	
-	@POST
-	@Logged(actionType = AuditingActionType.DISABLE_WALLET)
-	@Transactional
-	@Path("disable-wallet/{walletId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Disable Wallet", notes = "Version 1.0, Last Modified Date: 2016-07-28", response = GoodResponseModel.class )
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
-	@ApiImplicitParams({
-	    @ApiImplicitParam(name = "X-Request-ID", value = "requestId", required = true, dataType = "string", paramType = "header"),
-	    @ApiImplicitParam(name = "Authorization", value = "Authorization", required = true, dataType = "string", paramType = "header")})
-	public WalletDto disableWallet(@PathParam("walletId") String walletId, WalletDto walletDto) {
-		logger.debug("begin disableWallet, walletId = {}",walletId);
-		PortalExceptionUtils.throwIfNullOrEmptyString(walletId, PortalErrorCode.MISS_PARAM_WALLET_ID);
-		PortalExceptionUtils.throwIfNull(walletDto, PortalErrorCode.INVALID_PAYLOAD_DATA);
-		walletDto.validateDisableWallet();
-
-		Wallet wallet = PortalExceptionUtils.throwIfEmpty(walletService.findWalletById(walletId), PortalErrorCode.INVALID_WALLET_ID);
-		PortalExceptionUtils.throwIfFalse(wallet.isActive(), PortalErrorCode.WALLET_IS_INACTIVE);
-		
-		wallet.disable(rc.getRequestUserId());
-		return wallet.toWalletDto();
-	}
+//	@POST
+//	@Logged(actionType = AuditingActionType.DISABLE_WALLET)
+//	@Transactional
+//	@Path("disable-wallet/{walletId}")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@ApiOperation(value = "Disable Wallet", notes = "Version 1.0, Last Modified Date: 2016-07-28", response = GoodResponseModel.class )
+//	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
+//	@ApiImplicitParams({
+//	    @ApiImplicitParam(name = "X-Request-ID", value = "requestId", required = true, dataType = "string", paramType = "header"),
+//	    @ApiImplicitParam(name = "Authorization", value = "Authorization", required = true, dataType = "string", paramType = "header")})
+//	public WalletDto disableWallet(@PathParam("walletId") String walletId, WalletDto walletDto) {
+//		logger.debug("begin disableWallet, walletId = {}",walletId);
+//		PortalExceptionUtils.throwIfNullOrEmptyString(walletId, PortalErrorCode.MISS_PARAM_WALLET_ID);
+//		PortalExceptionUtils.throwIfNull(walletDto, PortalErrorCode.INVALID_PAYLOAD_DATA);
+//		walletDto.validateDisableWallet();
+//
+//		Wallet wallet = PortalExceptionUtils.throwIfEmpty(walletService.findWalletById(walletId), PortalErrorCode.INVALID_WALLET_ID);
+//		PortalExceptionUtils.throwIfFalse(wallet.isActive(), PortalErrorCode.WALLET_IS_INACTIVE);
+//		
+//		wallet.disable(rc.getRequestUserId());
+//		return wallet.toWalletDto();
+//	}
+//	
 	
-	
-	@POST
-	@Logged(actionType = AuditingActionType.ENABLE_WALLET)
-	@Transactional
-	@Path("enable-wallet/{walletId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Enable Wallet", notes = "Version 1.0, Last Modified Date: 2016-07-28", response = GoodResponseModel.class )
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
-	@ApiImplicitParams({
-	    @ApiImplicitParam(name = "X-Request-ID", value = "requestId", required = true, dataType = "string", paramType = "header"),
-	    @ApiImplicitParam(name = "Authorization", value = "Authorization", required = true, dataType = "string", paramType = "header")})
-	public WalletDto enableWallet(@PathParam("walletId") String walletId, WalletDto walletDto) {
-		logger.debug("begin enableWallet, walletId = {}",walletId);
-		PortalExceptionUtils.throwIfNullOrEmptyString(walletId, PortalErrorCode.MISS_PARAM_WALLET_ID);
-		PortalExceptionUtils.throwIfNull(walletDto, PortalErrorCode.INVALID_PAYLOAD_DATA);
-		walletDto.validateEnableWallet();
-
-		Wallet wallet = PortalExceptionUtils.throwIfEmpty(walletService.findWalletById(walletId), PortalErrorCode.INVALID_WALLET_ID);
-		PortalExceptionUtils.throwIfFalse(wallet.isInactive(), PortalErrorCode.WALLET_IS_ACTIVE);
-		
-		wallet.enableWallet(rc.getRequestUserId());
-		return wallet.toWalletDto();
-	}
+//	@POST
+//	@Logged(actionType = AuditingActionType.ENABLE_WALLET)
+//	@Transactional
+//	@Path("enable-wallet/{walletId}")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@ApiOperation(value = "Enable Wallet", notes = "Version 1.0, Last Modified Date: 2016-07-28", response = GoodResponseModel.class )
+//	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
+//	@ApiImplicitParams({
+//	    @ApiImplicitParam(name = "X-Request-ID", value = "requestId", required = true, dataType = "string", paramType = "header"),
+//	    @ApiImplicitParam(name = "Authorization", value = "Authorization", required = true, dataType = "string", paramType = "header")})
+//	public WalletDto enableWallet(@PathParam("walletId") String walletId, WalletDto walletDto) {
+//		logger.debug("begin enableWallet, walletId = {}",walletId);
+//		PortalExceptionUtils.throwIfNullOrEmptyString(walletId, PortalErrorCode.MISS_PARAM_WALLET_ID);
+//		PortalExceptionUtils.throwIfNull(walletDto, PortalErrorCode.INVALID_PAYLOAD_DATA);
+//		walletDto.validateEnableWallet();
+//
+//		Wallet wallet = PortalExceptionUtils.throwIfEmpty(walletService.findWalletById(walletId), PortalErrorCode.INVALID_WALLET_ID);
+//		PortalExceptionUtils.throwIfFalse(wallet.isInactive(), PortalErrorCode.WALLET_IS_ACTIVE);
+//		
+//		wallet.enableWallet(rc.getRequestUserId());
+//		return wallet.toWalletDto();
+//	}
 	
 	@Path("{walletId}/adjustments")
 	public AdjustmentResources getAdjustmentResources(@ApiParam(value="Wallet Id", required = true) @PathParam("walletId") String walletId){

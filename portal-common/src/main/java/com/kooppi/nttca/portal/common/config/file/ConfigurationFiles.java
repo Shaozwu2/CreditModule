@@ -6,6 +6,6 @@ import com.google.common.collect.Lists;
 
 public class ConfigurationFiles {
 
-	public static final List<String> PROPERTIES_FILES = Lists.newArrayList("/config.properties");
+	public static final List<String> PROPERTIES_FILES = Lists.newArrayList("config.properties");
 
 }

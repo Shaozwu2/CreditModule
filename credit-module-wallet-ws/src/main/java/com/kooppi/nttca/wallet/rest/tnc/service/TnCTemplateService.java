@@ -36,5 +36,7 @@ public interface TnCTemplateService {
 	public TnC findDefaultTnC();
 	
 	public void swapTnCMappingPriority(Long uid1, Long uid2);
+	
+	public String createFile(String fileName, String attachmentData);
 
 }

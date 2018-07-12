@@ -10,18 +10,18 @@
 		<name>java:global/credit-module-wallet</name>
 		<class-name>com.mysql.jdbc.jdbc2.optional.MysqlDataSource</class-name>
 
-	 	<server-name>${ENV=DB_HOST}</server-name>
+	 <server-name>${ENV=DB_HOST}</server-name>
 		<port-number>3306</port-number>
 		<database-name>credit_module</database-name>
 		<user>${ENV=JDBC_USER}</user>
 		<password>${ENV=JDBC_PASSWORD}</password>
 
 
-<!-- 		<server-name>mysql</server-name>
+<!-- 		<server-name>mysql2.internal.kooppi.com</server-name>
 		<port-number>3306</port-number>
 		<database-name>credit_module</database-name>
-		<user>root1</user>
-		<password>kl,m2we3</password> -->
+		<user>root</user>
+		<password>1q0p2w9o3e8i4r7u5t6y</password> -->
 
 		<!-- <server-name>127.0.0.1</server-name> -->
 		<!-- <port-number>3307</port-number> -->
@@ -31,7 +31,10 @@
 
 		<!-- <server-name>${ENV=DB_HOST}</server-name> <port-number>3306</port-number> 
 			<database-name>tx_poc</database-name> <user>${ENV=JDBC_USER}</user> <password>${ENV=JDBC_PASSWORD}</password> -->
-
+	<!-- 	<property>
+				<name>config.location</name>
+				<value>${ENV=CONFIG_LOCATION}</value>
+		</property> -->
 		<property>
 			<name>fish.payara.slow-query-threshold-in-seconds</name>
 			<value>5</value>

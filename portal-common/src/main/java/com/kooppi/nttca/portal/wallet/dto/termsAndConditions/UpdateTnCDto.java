@@ -32,6 +32,19 @@ public class UpdateTnCDto {
 	@ApiModelProperty(value = "isVisible", required = true, example = "true")
 	@XmlElement(name = "isVisible")
 	private Boolean isVisible;
+	
+	@ApiModelProperty(value = "fileName", required = false, example = "file.doc")
+	@XmlElement(name = "fileName")
+	private String fileName;
+	
+	@ApiModelProperty(value = "attachmentData", required = false, example = "data")
+	@XmlElement(name = "attachmentData")
+	//base64 encode
+	private String attachmentData;
+	
+	@ApiModelProperty(value = "size", required = false, example = "1024")
+	@XmlElement(name = "size")
+	private Integer size;
 
 	public void validateUpdateTnC() {
 		PortalExceptionUtils.throwIfNull(name, PortalErrorCode.MISS_PARAM_NAME);
@@ -77,6 +90,30 @@ public class UpdateTnCDto {
 
 	public void setIsVisible(Boolean isVisible) {
 		this.isVisible = isVisible;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getAttachmentData() {
+		return attachmentData;
+	}
+
+	public void setAttachmentData(String attachmentData) {
+		this.attachmentData = attachmentData;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
 	}
 
 }

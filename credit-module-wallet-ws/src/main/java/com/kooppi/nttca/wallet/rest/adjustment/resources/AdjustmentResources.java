@@ -64,9 +64,9 @@ public class AdjustmentResources {
 	@Inject
 	private PriceBookRepository priceBookService;
 	
-	@Transactional
-	@Path("create-adjustment")
 	@POST
+	@Path("create-adjustment")
+	@Transactional
 	@Logged(actionType = AuditingActionType.CREATE_CONTRACT)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -104,8 +104,8 @@ public class AdjustmentResources {
 	}
 	
 	
-	@Path("get-adjustment/{contractId}")
 	@GET
+	@Path("get-adjustment/{contractId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Get Adjustment", notes = "Version 1.0, Last Modified Date: 2018-03-20", response = ResponseHeader.class )
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GoodResponseModel.class), @ApiResponse(code = 400, message = "Bad Request", response = BadResponseModel.class), })
@@ -137,9 +137,9 @@ public class AdjustmentResources {
 		return dto;
 	}
 	
+	@POST
 	@Path("update-adjustment/{contractId}")
 	@Transactional
-	@POST
 	@Logged(actionType = AuditingActionType.UPDATE_CONTRACT)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -182,9 +182,9 @@ public class AdjustmentResources {
 		return result;
 	}
 	
+	@DELETE
 	@Path("delete-adjustment/{contractId}")
 	@Transactional
-	@DELETE
 	@Logged(actionType = AuditingActionType.DELETE_CONTRACT)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -210,9 +210,9 @@ public class AdjustmentResources {
 		return EmptyResponseResult.create();
 	}
 	
+	@POST
 	@Path("forfeit-adjustment/{contractId}")
 	@Transactional
-	@POST
 	@Logged(actionType = AuditingActionType.FORFEIT_CONTRACT)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -238,10 +238,10 @@ public class AdjustmentResources {
 		return EmptyResponseResult.create();
 	}
 	
+	@POST
 	@Path("cancel-forfeit-adjustment/{contractId}")
 	@Transactional
-	@POST
-	@Logged(actionType = AuditingActionType.FORFEIT_CONTRACT)
+	@Logged(actionType = AuditingActionType.CANCEL_FORFEIT_CONTRACT)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Cancel Forfeit Adjustment", notes = "Version 1.0, Last Modified Date: 2018-05-15", response = ResponseHeader.class )

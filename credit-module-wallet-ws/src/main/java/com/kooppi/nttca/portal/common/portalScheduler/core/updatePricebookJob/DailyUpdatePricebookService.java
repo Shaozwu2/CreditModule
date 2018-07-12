@@ -31,19 +31,19 @@ public class DailyUpdatePricebookService {
 	private static final Logger logger = LoggerFactory.getLogger(DailyUpdatePricebookService.class);
 
 	@Inject
-	@ConfigurationValue(property = "portal.mq.status.on", defaultValue = "false")
+	@ConfigurationValue(property = "ems.mq.status.on", defaultValue = "false")
 	private Boolean isStatusOn;
 
 	@Inject
-	@ConfigurationValue(property = "portal.mq.queue.credit.name", defaultValue = "portal-credit")
+	@ConfigurationValue(property = "ems.mq.queue.credit.name", defaultValue = "portal-credit")
 	private String queueName;
 
 	@Inject
-	@ConfigurationValue(property = "portal.mq.exchange.credit.name", defaultValue = "portal-credit-bcast")
+	@ConfigurationValue(property = "ems.mq.exchange.credit.name", defaultValue = "portal-credit-bcast")
 	private String exchangeName;
 
 	@Inject
-	@ConfigurationValue(property = "portal.mq.uri", defaultValue = "amqp://admin:admin@192.168.12.248:5672")
+	@ConfigurationValue(property = "ems.mq.uri", defaultValue = "amqp://admin:admin@192.168.12.248:5672")
 	private String uri;
 
 	@Inject

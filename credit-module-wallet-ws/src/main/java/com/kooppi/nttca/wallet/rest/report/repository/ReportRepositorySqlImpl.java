@@ -45,12 +45,7 @@ public class ReportRepositorySqlImpl extends BasicRepository implements ReportRe
 	}
 	
 	@Override
-	public void createOrUpdateReport(Report report) {
-		// get year and month info
-		LocalDate today = LocalDate.now();
-		Integer year = today.getYear();
-		Integer month = today.getMonthValue();
-		
+	public void createOrUpdateReport(Report report, Integer year, Integer month) {
 		// delete record if already exists
 		Query query = em.createQuery("DELETE FROM Report r WHERE FUNC('YEAR', r.reportDate) = :year AND FUNC('MONTH', r.reportDate) = :month");
 		query.setParameter("year", year);

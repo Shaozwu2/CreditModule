@@ -69,6 +69,20 @@ public class TnCTemplateServiceImpl implements TnCTemplateService {
 	}
 	
 	@Override
+	public String createFile(String fileName, String attachmentData) {
+		PortalExceptionUtils.throwIfFalse(StringUtils.validateFileExtn(fileName), PortalErrorCode.FILE_TYPE_NOT_ALLOWED);
+		
+		// finalFileName = fileName + "_" + random UUID
+		String finalFileName = fileName.substring(0, fileName.lastIndexOf(".")).concat("_")
+				.concat(UUID.randomUUID().toString())
+				.concat(fileName.substring(fileName.lastIndexOf("."), fileName.length()));
+
+		IOUtils.createFile(tncBasePath, attachmentData, finalFileName);
+		
+		return finalFileName;
+	}
+	
+	@Override
 	public void deleteTnC(TnC tnc) {
 		
 		//delete file if exist
