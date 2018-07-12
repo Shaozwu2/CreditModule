@@ -11,13 +11,19 @@ import javax.enterprise.context.ApplicationScoped;
 
 import com.google.common.collect.Maps;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ApplicationScoped
+@Slf4j
 public class PropertyResolver {
 
 	private Map<String, String> properties = Maps.newHashMap();
 	
 	@PostConstruct
 	private void  init(){
+		String configEnv = System.getenv("CONFIG_LOCATION");
+		System.out.println("#######CONFIG_LOCATION#####: " + configEnv);
+		log.debug("#######CONFIG_LOCATION#####: " + configEnv);
 		ConfigurationFiles.PROPERTIES_FILES.forEach(fileName->{
         	Properties p = new Properties();
 			try {
