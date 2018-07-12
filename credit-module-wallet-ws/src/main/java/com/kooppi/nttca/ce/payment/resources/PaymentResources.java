@@ -27,6 +27,8 @@ import com.kooppi.nttca.portal.ce.dto.payment.PaymentDto;
 import com.kooppi.nttca.portal.ce.dto.payment.ReservationAndTransactionCollectionDto;
 import com.kooppi.nttca.portal.ce.dto.payment.ReservationAndTransactionDto;
 import com.kooppi.nttca.portal.ce.dto.payment.ReservationAndTransactionSearchDto;
+import com.kooppi.nttca.portal.common.auditlog.AuditingActionType;
+import com.kooppi.nttca.portal.common.auditlog.Logged;
 import com.kooppi.nttca.portal.common.utils.LocalDateParameterConverter;
 import com.kooppi.nttca.portal.exception.domain.PortalErrorCode;
 import com.kooppi.nttca.portal.exception.domain.PortalExceptionUtils;
@@ -92,6 +94,9 @@ public class PaymentResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public PaymentDto getPayment(@PathParam("paymentId") String paymentId) {
 		logger.debug("getPayment");
+		String configEnv = System.getenv("CONFIG_LOCATION");
+		System.out.println("#######CONFIG_LOCATION#####: " + configEnv);
+		logger.debug("#######CONFIG_LOCATION#####: " + configEnv);
 		PortalExceptionUtils.throwIfNullOrEmptyString(paymentId, PortalErrorCode.PAYMENT_MISS_PATH_PARAM_PAYMENT_ID);
 		Transaction transaction = PortalExceptionUtils.throwIfEmpty(transactionService.findCommiteSuccessTransactionByTransactionId(paymentId), PortalErrorCode.PAYMENT_MISSING_TRANSACTION);
 
@@ -106,7 +111,7 @@ public class PaymentResources {
 	//TODO: new portal create real time payment use another api, which has audit trail 
 	@POST
 	@Path("create-real-time-payment")
-//	@Logged(actionType = AuditingActionType.CREATE_REALTIME_TRANSACTION)
+	@Logged(actionType = AuditingActionType.CREATE_REALTIME_TRANSACTION)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public PaymentDto createRealTimeTransaction(CreatePaymentDto createPaymentDto) {
@@ -117,7 +122,6 @@ public class PaymentResources {
 		return payment.toPaymentDto();
 	}
 	
-	//tested
 	@POST
 	@Path("create-payment-and-reserve")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -132,6 +136,7 @@ public class PaymentResources {
 	}
 	
 	@POST
+	@Logged(actionType = AuditingActionType.CONFIRM_TRANSACTION)
 	@Path("{paymentId}/confirm")
 	@Produces(MediaType.APPLICATION_JSON)
 	public PaymentDto confirmPayment(@PathParam("paymentId") String paymentId, PaymentDto paymentDto) {
@@ -142,7 +147,6 @@ public class PaymentResources {
 		return payment.toPaymentDtoWithoutChargingItemsAndExpiredDate();
 	}
 	
-	//tested
 	@POST
 	@Path("{paymentId}/cancel-reservation")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -155,6 +159,7 @@ public class PaymentResources {
 	}
 	
 	@POST
+	@Logged(actionType = AuditingActionType.CANCEL_TRANSACTION)
 	@Path("{paymentId}/refund")
 	@Produces(MediaType.APPLICATION_JSON)
 	public PaymentDto refundPayment(@PathParam("paymentId") String paymentId, PaymentDto paymentDto) {
